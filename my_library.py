@@ -65,6 +65,16 @@ def PCA(stock, data, plot):
 
         results.summary()
 
-        return cum_var_exp, PC10, results
+        return cum_var_exp, PC10, results, eig_vecs
+
+def apply_PCA(stock, data, eig_vecs):
+        PCs = np.matmul(data.values, eig_vecs)
+        PCs = pd.DataFrame(PCs, index=data.index)
+        PCs['AAPL'] = stock
+        colnames = ['PC'+str(i) for i in np.arange(len(PCs.columns.values) - 1)] + ['AAPL']
+        PCs.columns = colnames
+        PC10 = PCs[['PC0','PC1','PC2','PC3','PC4','PC5','PC6','PC7','PC8','PC9','PC10','AAPL']]
+
+        return PC10
 
 
